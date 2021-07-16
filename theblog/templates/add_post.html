@@ -5,11 +5,16 @@
 
 <h1>Add Post</h1>
 <br/><br/>
+
+<div class="mb-3">
+
 <form method="POST">
     <!-- Cross-site request forgery -->
     {% csrf_token %}
     {{ form.as_p }}
     <button class="btn btn-success">Post</button>
+
+</div>
 
 
 
