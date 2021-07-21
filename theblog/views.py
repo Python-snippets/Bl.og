@@ -13,7 +13,7 @@ class HomeView(ListView):
     template_name = 'home.html'
     #ordering = ['-id']
 #order by negetive date
-    odering =['-post.date']
+    ordering =['-post_date']
 
 class ArticleDetailView(DetailView):
     model = Post
