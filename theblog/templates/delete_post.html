@@ -4,23 +4,26 @@
 {% block content %}
 
 {% if user.is_authenticated %}
+    {% if user.id == post.author.id %}
 
-    <h1>Delete Post</h1>
-    <br/><br/>
-    <h3> Delete: {{ post.title }} </h3>
-    <br/>
+        <h1>Delete Post</h1>
+        <br/><br/>
+        <h3> Delete: {{ post.title }} </h3>
+        <br/>
 
 
-    <div class="mb-3">
+        <div class="mb-3">
 
-    <form method="POST">
-        <!-- Cross-site request forgery -->
-        {% csrf_token %}
-        <strong>Are you sure?</strong><br/><br/>
-        <button class="btn btn-danger btn-sm">Delete</button>
+        <form method="POST">
+            <!-- Cross-site request forgery -->
+            {% csrf_token %}
+            <strong>Are you sure?</strong><br/><br/>
+            <button class="btn btn-danger btn-sm">Delete</button>
 
-    </div>
-
+        </div>
+    {% else %}
+        You are not allowed here buddy! 
+    {% endif %}
 {% else %}
 
 You are not allowed here buddy! 
