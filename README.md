@@ -1,6 +1,10 @@
 # Bl.og - WIP
 
-Made with ❤  by royalturd using Django 
+# Demo   
+
+http://royalturd.pythonanywhere.com
+
+Made with ❤  by royalturd using Django hosted on pythonanywhere.com
 
 <a href="#license"><img src="https://img.shields.io/badge/License-GPL_v3-blue" alt="License"></a>
 
