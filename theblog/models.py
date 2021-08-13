@@ -12,8 +12,8 @@ class Category(models.Model):
 
     def get_absolute_url(self):
     #   return reverse("article-detail", args=(str(self.id)) )
-    # sends you to the home page 
-        return reverse("home")  
+    # sends you to the home page
+        return reverse("home")
 
 class Post(models.Model):
     title = models.CharField(max_length=225)
@@ -22,7 +22,7 @@ class Post(models.Model):
     #body = models.TextField(null=True)
     body = RichTextField(null=True, blank=True)
     post_date = models.DateField(auto_now_add=True)
-    category = models.CharField(max_length=225, default='Alpha')
+    category = models.CharField(max_length=225, default='random-stuff')
     likes = models.ManyToManyField(User, related_name='blog_posts')
 
     def __str__(self):
@@ -33,6 +33,6 @@ class Post(models.Model):
 
     def get_absolute_url(self):
     #   return reverse("article-detail", args=(str(self.id)) )
-    # sends you to the home page 
+    # sends you to the home page
         return reverse("home")
-    
+

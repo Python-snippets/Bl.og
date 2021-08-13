@@ -14,13 +14,16 @@
         <!-- Cross-site request forgery -->
         {% csrf_token %}
         {{ form.as_p }}
+
+         White space in category name is not allowed
+         <br/>
         <button class="btn btn-success">Add Category</button>
 
     </div>
 
 {% else %}
 
-You are not allowed here buddy! 
+You are not allowed here buddy!
 
 {% endif %}
 
