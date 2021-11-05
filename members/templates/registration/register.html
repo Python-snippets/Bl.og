@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
+{% load account %}
 {% block title %}Register{% endblock %}
 
 {% block content %}
@@ -13,6 +15,13 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button class="btn btn-success">Register</button>
+    <br/><br/>
+       Authenticate with
+
+    <br/>
+    <a href="{% provider_login_url 'github' %}">
+    <img alt="Github" width="30px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/github.svg" />
+    </a>
 
 </div>
 
