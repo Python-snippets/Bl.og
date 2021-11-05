@@ -10,7 +10,7 @@
 
     <div class="mb-3">
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <!-- Cross-site request forgery -->
         {% csrf_token %}
         {{ form.media }}

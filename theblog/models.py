@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.fields import BLANK_CHOICE_DASH
 from django.urls import reverse
 from datetime import datetime, date
 from ckeditor.fields import RichTextField
@@ -24,6 +25,7 @@ class Post(models.Model):
     post_date = models.DateField(auto_now_add=True)
     category = models.CharField(max_length=225, default='Alpha')
     likes = models.ManyToManyField(User, related_name='blog_posts')
+    header_image = models.ImageField(null=True, blank=True, upload_to="images/") 
 
     def __str__(self):
         return self.title + ' | ' + str(self.author)
