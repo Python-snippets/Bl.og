@@ -16,6 +16,21 @@ class Category(models.Model):
     # sends you to the home page
         return reverse("home")
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE) # if we delete the user all of its attribute will gets deleted automatically 
+    bio = models.TextField(null=True)
+    profile_pic =  models.ImageField(null=True, blank=True, upload_to="images/profile/")
+    ##--------------------------------Social Links------------------------------##
+    github = models.CharField(max_length=225, null=True, blank=True)
+    website = models.CharField(max_length=225, null=True, blank=True)
+    twitter = models.CharField(max_length=225, null=True, blank=True)
+    instagram = models.CharField(max_length=225, null=True, blank=True)
+    #null= models.CharField(max_length=225, null=True, blank=True) 
+
+    def __str__(self):
+        return str(self.user)
+
+
 class Post(models.Model):
     title = models.CharField(max_length=225)
     title_tag = models.CharField(max_length=225)

@@ -45,6 +45,39 @@
              - {{ total_likes }} likes
         <form/>
 
+<br/><br/>
+
+<div class=" text-white bg-dark card mb-3">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{ post.author.profile.profile_pic.url }}" class="img-fluid rounded-start" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{post.author.first_name}}  {{post.author.last_name}}</h5>
+          <p class=" small text-muted">
+            {% if post.author.profile.website %}
+                | <a href="{{ post.author.profile.website }}">Website</a>
+            {% endif %}
+
+            {% if post.author.profile.github %}
+                | <a href="{{ post.author.profile.github }}">Github</a>
+            {% endif %}
+
+            {% if post.author.profile.twitter %}
+                | <a href="{{ post.author.profile.twitter }}">Twitter</a>
+            {% endif %}    
+            
+            {% if post.author.profile.instagram %}
+               | <a href="{{ post.author.profile.instagram }}">Instagram </a>
+            {% endif %}
+
+        </p>
+          <p class="card-text">{{  post.author.profile.bio }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-{% endblock %} 
+{% endblock %}
