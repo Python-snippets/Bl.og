@@ -8,6 +8,10 @@ Made with ❤  by royalturd using [Django](https://docs.djangoproject.com/en/4.0
 
 <a href="#license"><img src="https://img.shields.io/badge/License-GPL_v3-blue" alt="License"></a>
 
+[![Django CI](https://github.com/Python-snippets/Bl.og/actions/workflows/django.yml/badge.svg)](https://github.com/Python-snippets/Bl.og/actions/workflows/django.yml)
+
+[![CodeQL](https://github.com/Python-snippets/Bl.og/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Python-snippets/Bl.og/actions/workflows/codeql-analysis.yml)
+
 <img src="https://github.com/Python-snippets/Bl.og/blob/master/screenshots/Screenshot%202021-08-04%20044809.png">
 
 <img src="https://github.com/Python-snippets/Bl.og/blob/master/screenshots/Screenshot%202021-08-04%20045057.png">
