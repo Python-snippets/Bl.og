@@ -25,14 +25,19 @@ pip3 install django
 
 ### Prepare your environment
 ```
-python3 -m venv env
+python -m venv env
 ```
 
 ``` 
-source env/bin/activate
+source env/Scripts/activate
 ```
 
 ### Run The development server
 ```
 python manage.py runserver
 ```
+
+
+## Contributing
+
+I love contributions, so please feel free to fix bugs, improve things, provide documentation. Just send a pull request.
