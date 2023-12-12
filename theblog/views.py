@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls.base import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from  .models import Category, Post
-from .forms import PostForm, EditForm
+from  .models import Category, Post, Comment
+from .forms import PostForm, EditForm, CommentForm
 from django.http  import HttpResponseRedirect
 
 # Create your views here.
@@ -84,3 +84,18 @@ class DeletePostView(DeleteView):
     template_name = 'delete_post.html'
     success_url = reverse_lazy('home')
 
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comments = Comment.objects.filter(post=post)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user  # Assuming you have user authentication
+            comment.save()
+    else:
+        form = CommentForm()
+
+    return render(request, 'article_detail.html', {'post': post, 'comments': comments, 'form': form})

@@ -47,6 +47,23 @@
 
 <br/><br/>
 
+<h2>Comments</h2>
+<ul>
+    {% for comment in comments %}
+        <li>
+            <strong>{{ comment.author.username }}</strong>
+            <p>{{ comment.text }}</p>
+            <p>{{ comment.created_date }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>Add a comment</h2>
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-success">Submit</button>
+
 <div class=" text-white bg-dark card mb-3">
     <div class="row g-0">
       <div class="col-md-4">

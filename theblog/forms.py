@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from .models import Post, Category
+from .models import Post, Category, Comment
 
 choices = Category.objects.all().values_list('name','name')
 
@@ -37,3 +37,8 @@ class EditForm(forms.ModelForm):
             'body' : forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Start Writing.. '}),
 
         }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
