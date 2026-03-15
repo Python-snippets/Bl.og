@@ -1,28 +1,131 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 
-<h1>post</h1>
+<style>
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: minmax(200px, auto);
+        gap: 24px;
+        margin-top: 24px;
+    }
 
-<ul>
+    .bento-card {
+        border-radius: 16px;
+        border: 1px solid var(--md-sys-color-outline);
+        background-color: var(--md-sys-color-surface);
+        padding: 24px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: var(--md-sys-color-on-surface);
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+        position: relative;
+    }
+
+    .bento-card:hover {
+        background-color: var(--md-sys-color-surface-variant);
+        text-decoration: none;
+    }
+
+    /* First item is a large featured bento card */
+    .bento-card.featured {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    @media (max-width: 900px) {
+        .bento-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .bento-card.featured {
+            grid-column: span 2;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .bento-grid {
+            grid-template-columns: 1fr;
+        }
+        .bento-card.featured {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+    }
+    
+    .meta-data {
+        font-size: 13px;
+        color: var(--md-sys-color-on-surface-variant);
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+    }
+
+    .bento-title {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.3;
+        margin-bottom: 8px;
+    }
+    
+    .bento-card.featured .bento-title {
+        font-size: 32px;
+        margin-bottom: 16px;
+    }
+    
+    .bento-excerpt {
+        margin-top: 16px;
+        color: var(--md-sys-color-on-surface-variant);
+        line-height: 1.6;
+        flex-grow: 1;
+        font-size: 15px;
+    }
+    .bento-card.featured .bento-excerpt {
+        font-size: 18px;
+    }
+</style>
+
+<div style="display: flex; justify-content: space-between; align-items: center;" class="mb-4 mt-4">
+    <h1 style="font-size: 36px; font-weight: 700; margin: 0; letter-spacing: -0.5px;">Latest Posts</h1>
+</div>
+
+<div class="bento-grid">
 {% for post in object_list %}
-    <li><a href="{% url 'article-detail' post.pk %}">{{ post.title }}  </a>
-    - <a href="{% url 'category' post.category|slugify %}">{{ post.category }} </a>
-    - {{ post.author.first_name }} 
-    {{post.author.last_name}} - {{post.post_date}} 
+    <a href="{% url 'article-detail' post.pk %}" class="bento-card {% if forloop.first %}featured{% endif %}">
+        
+        <div class="bento-title">
+            {{ post.title }}
+        </div>
+        
+        <div class="meta-data">
+            <span>{{ post.post_date | date:"M d, Y" }}</span>
+            <span>•</span>
+            <span>3 min read</span> 
+            <span>•</span>
+            <span style="color: var(--md-sys-color-primary);">{{ post.category }}</span>
+        </div>
 
-    {% if user.is_authenticated %}
-        {% if user.id == post.author.id %}
-            <small> <a href="{% url 'update_post' post.pk %}">(Edit)</a>
-            <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
+        <div class="bento-excerpt">
+            {{ post.body |slice:":120"|safe }}...
+        </div>
+        
+        {% if user.is_authenticated and user.id == post.author.id %}
+            <div style="position: absolute; bottom: 16px; right: 16px; display: flex; gap: 4px; z-index: 10;">
+                <md-icon-button href="{% url 'update_post' post.pk %}" title="Edit" style="background: var(--md-sys-color-surface); border-radius: 50%;">
+                   <md-icon>edit</md-icon>
+                </md-icon-button>
+                <md-icon-button href="{% url 'delete_post' post.pk %}" title="Delete" style="background: var(--md-sys-color-surface); border-radius: 50%;">
+                   <md-icon>delete</md-icon>
+                </md-icon-button>
+            </div>
         {% endif %}
-    {% endif %}
-
-    </small> <br/>
-    {{ post.body |slice:":250"|safe }}</li>
-{% endfor%}
-</ul>
-
+    </a>
+{% endfor %}
+</div>
 
 {% endblock %}

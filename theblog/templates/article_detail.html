@@ -3,102 +3,124 @@
 {% block title %}{{ post.title_tag }}{% endblock %}
 
 {% block content %}
-    <h1>{{ post.title }}</h1>
-    <samll>By: {{post.author.first_name}}  {{post.author.last_name}} - {{post.post_date}}
-
-{% if user.is_authenticated %}
-    {% if user.id == post.author.id %}
-        <a href="{% url 'update_post' post.pk %}">(Edit)</a>
-        <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
-        </small></br>
-    {% endif %}
-{% endif %}
-        <hr>
-        <br/>
-
-        {% if post.header_image %}
-        <img src="{{ post.header_image.url }}">
+<article style="max-width: 768px; margin: 0 auto;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+            <h1 style="font-size: 36px; margin: 0; color: var(--md-sys-color-on-surface);">{{ post.title }}</h1>
+            <div style="color: var(--md-sys-color-on-surface-variant); margin-top: 8px;">
+                By: {{post.author.first_name}} {{post.author.last_name}} • {{post.post_date}}
+            </div>
+        </div>
+        
+        {% if user.is_authenticated and user.id == post.author.id %}
+            <div style="display: flex; gap: 8px;">
+                <md-icon-button href="{% url 'update_post' post.pk %}" title="Edit">
+                   <md-icon>edit</md-icon>
+                </md-icon-button>
+                <md-icon-button href="{% url 'delete_post' post.pk %}" title="Delete">
+                   <md-icon>delete</md-icon>
+                </md-icon-button>
+            </div>
         {% endif %}
-        <br/>
+    </div>
+
+    <md-divider style="margin: 24px 0;"></md-divider>
+
+    {% if post.header_image %}
+    <div style="width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 24px;">
+        <img src="{{ post.header_image.url }}" style="width: 100%; object-fit: cover;">
+    </div>
+    {% endif %}
+    
+    <div style="font-size: 18px; line-height: 1.8; color: var(--md-sys-color-on-surface); word-wrap: break-word; overflow-wrap: break-word;">
         {{ post.body|safe }}
+    </div>
 
-        <br/><br/>
-        <a href="{% url 'home' %}"class="btn btn-dark">Back</a>
+    <div style="margin-top: 48px;">
+        <md-outlined-button href="{% url 'home' %}">
+            <md-icon slot="icon">arrow_back</md-icon>
+            Back
+        </md-outlined-button>
+    </div>
 
-        <br/><br/>
-        <hr>
-        <br/>
-        <form action ="{% url 'like_post' post.pk %}"
-        method = "POST">
-            {% csrf_token %}
-
-<!--user authentication like/dislike-->
+    <md-divider style="margin: 48px 0;"></md-divider>
+    
+    <form action="{% url 'like_post' post.pk %}" method="POST" style="display: flex; align-items: center; gap: 16px;">
+        {% csrf_token %}
         {% if user.is_authenticated %}  
             {% if liked  %}
-                <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-outline-danger btn-sm">Unlike</button>
+                <md-filled-tonal-button type="submit" name="post_id" value="{{ post.id }}">
+                    <md-icon slot="icon">thumb_down</md-icon>
+                    Unlike
+                </md-filled-tonal-button>
             {% else %}   
-                <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-outline-success btn-sm">Like</button>
+                <md-filled-button type="submit" name="post_id" value="{{ post.id }}">
+                    <md-icon slot="icon">thumb_up</md-icon>
+                    Like
+                </md-filled-button>
             {% endif %}
         {% else %}
          <a href="{% url 'login' %}">Login</a> to Like
         {% endif %}
-             - {{ total_likes }} likes
-        <form/>
+        <span style="font-weight: 500; color: var(--md-sys-color-on-surface-variant);">{{ total_likes }} likes</span>
+    </form>
 
-<br/><br/>
+    <br/><br/>
 
-<h2>Comments</h2>
-<ul>
-    {% for comment in comments %}
-        <li>
-            <strong>{{ comment.author.username }}</strong>
-            <p>{{ comment.text }}</p>
-            <p>{{ comment.created_date }}</p>
-        </li>
-    {% endfor %}
-</ul>
-
-<h2>Add a comment</h2>
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-success">Submit</button>
-
-<div class=" text-white bg-dark card mb-3">
-    <div class="row g-0">
-      <div class="col-md-4">
-{% if post.author.profile.profile_pic %}
-        <img src="{{ post.author.profile.profile_pic.url }}" class="img-fluid rounded-start" alt="...">
-{% else %}
-        <img src="{% static 'theblog/images/user.png' %}" class="img-fluid rounded-start" alt="...">
-{% endif %}
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">{{post.author.first_name}}  {{post.author.last_name}}</h5>
-          <p class=" small text-muted">
-            {% if post.author.profile.website %}
-                | <a href="{{ post.author.profile.website }}">Website</a>
-            {% endif %}
-
-            {% if post.author.profile.github %}
-                | <a href="{{ post.author.profile.github }}">Github</a>
-            {% endif %}
-
-            {% if post.author.profile.twitter %}
-                | <a href="{{ post.author.profile.twitter }}">Twitter</a>
-            {% endif %}    
-            
-            {% if post.author.profile.instagram %}
-               | <a href="{{ post.author.profile.instagram }}">Instagram </a>
-            {% endif %}
-
-        </p>
-          <p class="card-text">{{  post.author.profile.bio }}</p>
-        </div>
-      </div>
+    <h2 style="font-weight: 600;">Comments</h2>
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;">
+        {% for comment in comments %}
+            <div style="background-color: var(--md-sys-color-surface-variant); padding: 16px; border-radius: 12px;">
+                <div style="font-weight: 600;">{{ comment.author.username }}</div>
+                <div style="color: var(--md-sys-color-on-surface-variant); font-size: 13px; margin-bottom: 8px;">{{ comment.created_date }}</div>
+                <div style="margin: 0; line-height: 1.6;">{{ comment.text }}</div>
+            </div>
+        {% empty %}
+            <p style="color: var(--md-sys-color-on-surface-variant);">No comments yet.</p>
+        {% endfor %}
     </div>
-  </div>
 
+    <h3 style="font-weight: 600;">Add a comment</h3>
+    <form method="post" action="" style="margin-bottom: 48px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <md-filled-button type="submit" style="margin-top: 8px;">Submit</md-filled-button>
+    </form>
 
+    <!-- Author Profile Card M3 -->
+    <md-outlined-card style="width: 100%; padding: 24px;">
+        <div style="display: flex; gap: 24px; align-items: flex-start;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background-color: var(--md-sys-color-surface-variant);">
+            {% if post.author.profile.profile_pic %}
+                    <img src="{{ post.author.profile.profile_pic.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+                    <img src="{% static 'theblog/images/user.png' %}" style="width: 100%; height: 100%; object-fit: cover;">
+            {% endif %}
+          </div>
+          <div style="flex-grow: 1;">
+            <div style="font-size: 20px; font-weight: 600;">{{post.author.first_name}} {{post.author.last_name}}</div>
+            
+            <p style="margin-top: 8px; color: var(--md-sys-color-on-surface-variant); font-size: 15px; line-height: 1.6;">{{ post.author.profile.bio }}</p>
+
+            <div style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; font-size: 14px;">
+                {% if post.author.profile.website %}
+                    <a href="{{ post.author.profile.website }}" style="color: var(--md-sys-color-primary);">Website</a>
+                {% endif %}
+                {% if post.author.profile.github %}
+                    <a href="{{ post.author.profile.github }}" style="color: var(--md-sys-color-primary);">Github</a>
+                {% endif %}
+                {% if post.author.profile.twitter %}
+                    <a href="{{ post.author.profile.twitter }}" style="color: var(--md-sys-color-primary);">Twitter</a>
+                {% endif %}    
+                {% if post.author.profile.instagram %}
+                   <a href="{{ post.author.profile.instagram }}" style="color: var(--md-sys-color-primary);">Instagram</a>
+                {% endif %}
+            </div>
+            
+          </div>
+        </div>
+    </md-outlined-card>
+
+</article>
 {% endblock %}
