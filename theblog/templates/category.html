@@ -1,32 +1,57 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-
 
 {% if category_posts %}
 
-    <h1>{{ cats }}</h1>
+<div style="display: flex; justify-content: space-between; align-items: center;" class="mb-4">
+    <h1 style="font-size: 32px; font-weight: 400; margin: 0; text-transform: capitalize;">{{ cats }}</h1>
+</div>
 
-    <ul>
-    {% for post in category_posts %}
-        <li><a href="{% url 'article-detail' post.pk %}">{{ post.title }}  </a>
-        - {{ post.author.first_name }} 
-        {{post.author.last_name}} - {{post.post_date}} 
+<div style="display: flex; flex-direction: column; gap: 24px;">
+{% for post in category_posts %}
+    <md-outlined-card style="width: 100%; padding: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <a href="{% url 'article-detail' post.pk %}" style="font-size: 24px; font-weight: 500; color: var(--md-sys-color-on-surface); text-decoration: none;">
+                    {{ post.title }}
+                </a>
+                <div style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin-top: 4px;">
+                   By {{ post.author.first_name }} {{ post.author.last_name }} • {{ post.post_date }}
+                </div>
+            </div>
+            
+            {% if user.is_authenticated %}
+                <div style="display: flex; gap: 8px;">
+                    <md-icon-button href="{% url 'update_post' post.pk %}" title="Edit">
+                       <md-icon>edit</md-icon>
+                    </md-icon-button>
+                    <md-icon-button href="{% url 'delete_post' post.pk %}" title="Delete">
+                       <md-icon>delete</md-icon>
+                    </md-icon-button>
+                </div>
+            {% endif %}
+        </div>
 
-        {% if user.is_authenticated %}
-        <small> <a href="{% url 'update_post' post.pk %}">(Edit)</a>
-            <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
-        {% endif %}
-
-        </small> <br/>
-        {{ post.body |slice:":250"|safe }}</li>
-    {% endfor%}
-    </ul>
+        <div style="margin-top: 16px; color: var(--md-sys-color-on-surface-variant);">
+            {{ post.body |slice:":250"|safe }}
+        </div>
+        
+        <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+            <md-text-button href="{% url 'article-detail' post.pk %}">Read More</md-text-button>
+        </div>
+    </md-outlined-card>
+{% endfor %}
+</div>
 
 {% else %}
-    <h2> Sorry this page does not exist....</h2>
+    <div style="text-align: center; margin-top: 64px; color: var(--md-sys-color-on-surface-variant);">
+        <md-icon style="font-size: 48px; margin-bottom: 16px;">search_off</md-icon>
+        <h2 style="font-weight: 400;">Sorry, no posts found in this category...</h2>
+        <div style="margin-top: 24px;">
+            <md-filled-button href="{% url 'home' %}">Return Home</md-filled-button>
+        </div>
+    </div>
 {% endif %}
-
 
 {% endblock %}
