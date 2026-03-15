@@ -5,25 +5,36 @@
 
 {% if user.is_authenticated %}
     {% if user.id == post.author.id %}
-        <h1>Update Post</h1>
-        <br/><br/>
-
-        <div class="mb-3">
-
-        <form method="POST">
-            <!-- Cross-site request forgery -->
-            {% csrf_token %}
-            {{ form.media }}
-            {{ form.as_p }}
-            <button class="btn btn-success">Update</button>
-
+        
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h1 style="font-size: 32px; font-weight: 400; margin-bottom: 32px;">Update Post</h1>
+            
+            <md-outlined-card style="width: 100%; padding: 32px;">
+                <form method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Cross-site request forgery -->
+                    {% csrf_token %}
+                    {{ form.media }}
+                    {{ form.as_p }}
+                    
+                    <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+                        <md-filled-button type="submit">Update Post</md-filled-button>
+                    </div>
+                </form>
+            </md-outlined-card>
         </div>
+
     {% else %}
-        You are not allowed here buddy! 
+        <div style="text-align: center; margin-top: 64px; color: var(--md-sys-color-error);">
+            <md-icon style="font-size: 48px; margin-bottom: 16px;">gpp_bad</md-icon>
+            <h2 style="font-weight: 400;">You are not allowed here buddy!</h2>
+        </div>
     {% endif %}
 {% else %}
 
-You are not allowed here buddy! 
+    <div style="text-align: center; margin-top: 64px; color: var(--md-sys-color-error);">
+        <md-icon style="font-size: 48px; margin-bottom: 16px;">gpp_bad</md-icon>
+        <h2 style="font-weight: 400;">You are not allowed here buddy!</h2>
+    </div>
 
 {% endif %}
 

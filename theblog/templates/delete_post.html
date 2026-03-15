@@ -1,34 +1,46 @@
 {% extends 'base.html' %}
-{% block title %}Edit Blog Post{% endblock %}
+{% block title %}Delete Blog Post{% endblock %}
 
 {% block content %}
 
 {% if user.is_authenticated %}
     {% if user.id == post.author.id %}
 
-        <h1>Delete Post</h1>
-        <br/><br/>
-        <h3> Delete: {{ post.title }} </h3>
-        <br/>
+        <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+            <md-icon style="font-size: 48px; color: var(--md-sys-color-error); margin-bottom: 16px;">warning</md-icon>
+            <h1 style="font-size: 32px; font-weight: 400; margin-bottom: 8px;">Delete Post</h1>
+            <h3 style="font-size: 20px; font-weight: 400; color: var(--md-sys-color-on-surface-variant); margin-bottom: 32px;">{{ post.title }}</h3>
 
-
-        <div class="mb-3">
-
-        <form method="POST">
-            <!-- Cross-site request forgery -->
-            {% csrf_token %}
-            <strong>Are you sure?</strong><br/><br/>
-            <button class="btn btn-danger btn-sm">Delete</button>
-
+            <md-outlined-card style="width: 100%; padding: 32px;">
+                <form method="POST" style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+                    <!-- Cross-site request forgery -->
+                    {% csrf_token %}
+                    
+                    <strong style="font-size: 18px;">Are you sure you want to delete this post? This action cannot be undone.</strong>
+                    
+                    <div style="display: flex; gap: 16px;">
+                        <md-outlined-button type="button" href="{% url 'home' %}">Cancel</md-outlined-button>
+                        <md-filled-button type="submit" style="--md-sys-color-primary: var(--md-sys-color-error); --md-sys-color-on-primary: var(--md-sys-color-on-error);">
+                            Delete
+                        </md-filled-button>
+                    </div>
+                </form>
+            </md-outlined-card>
         </div>
+        
     {% else %}
-        You are not allowed here buddy! 
+        <div style="text-align: center; margin-top: 64px; color: var(--md-sys-color-error);">
+            <md-icon style="font-size: 48px; margin-bottom: 16px;">gpp_bad</md-icon>
+            <h2 style="font-weight: 400;">You are not allowed here buddy!</h2>
+        </div>
     {% endif %}
 {% else %}
 
-You are not allowed here buddy! 
+    <div style="text-align: center; margin-top: 64px; color: var(--md-sys-color-error);">
+        <md-icon style="font-size: 48px; margin-bottom: 16px;">gpp_bad</md-icon>
+        <h2 style="font-weight: 400;">You are not allowed here buddy!</h2>
+    </div>
 
 {% endif %}
-
 
 {% endblock %}
