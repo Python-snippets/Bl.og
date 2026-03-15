@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
-{% block title %}R{% endblock %}
+{% block title %}Edit Profile{% endblock %}
 
 {% block content %}
 
-<h1>Update Profile</h1>
-<br/><br/>
+<h1 style="font-size: 32px; font-weight: 400; margin-bottom: 24px;">Update Profile</h1>
 
-{{ user.profile.bio }}
+<!-- Current Bio Preview -->
+<md-outlined-card style="width: 100%; padding: 24px; margin-bottom: 32px; background-color: var(--md-sys-color-surface-variant);">
+    <div style="font-weight: 500; font-size: 14px; margin-bottom: 8px; color: var(--md-sys-color-outline);">Current Bio</div>
+    <div style="font-size: 16px;">{{ user.profile.bio|default:"No bio provided." }}</div>
+</md-outlined-card>
 
-<br/><br/>
-
-<div class="mb-3">
-
-<form method="POST">
-    <!-- Cross-site request forgery -->
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-success">Update Profile</button>
-
-</div>
-
-
-
+<md-outlined-card style="width: 100%; padding: 32px;">
+    <form method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- Cross-site request forgery -->
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+            <md-filled-button type="submit">Save Changes</md-filled-button>
+        </div>
+    </form>
+</md-outlined-card>
 
 {% endblock %}
